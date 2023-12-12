@@ -1,7 +1,35 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@helpers/*": [
+        "src/helpers/*"
+      ],
+      "@store/*": [
+        "src/store/*"
+      ],
+      "@modules/*": [
+        "src/modules/*"
+      ],
+      "@common/*": [
+        "src/common/*"
+      ]
     }
-  }
+  },
+  "include": [
+    "src/**/*",
+    "public/**/*",
+    "next-env.d.js",
+    "**/*.js",
+    "**/*.jsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
