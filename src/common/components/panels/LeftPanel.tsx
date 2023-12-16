@@ -1,30 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
-import lightPalette from "src/styles/theme/palettes";
-import PropTypes from 'prop-types';
-import Theme from "src/styles/theme";
+import { Box, Typography } from '@mui/material';
+import lightPalette from 'src/styles/theme/palettes';
 
 const { grey, primary } = lightPalette;
 
+interface Product {
+    id: string;
+    category: string;
+}
 
-export default function LeftPanel({ products, categoryChange, selectedCategory, }) {
-    const productCategories = new Set();
+interface LeftPanelProps {
+    products: Product[];
+    categoryChange: (category: string | null) => void;
+    selectedCategory: string | null;
+}
+
+export default function LeftPanel({
+    products,
+    categoryChange,
+    selectedCategory,
+}: LeftPanelProps) {
+    const productCategories = new Set<string>();
 
     return (
         <Box
             sx={{
                 background: grey[50],
-                width: "15vw",
-                cursor: "pointer",
-                minHeight: "100vh",
-                paddingTop: "20px",
+                width: '15vw',
+                cursor: 'pointer',
+                minHeight: '100vh',
+                paddingTop: '20px',
             }}
         >
             <Typography
                 variant="body1"
                 sx={{
                     background: selectedCategory ? '' : primary.light,
-                    padding: "10px 25px",
+                    padding: '10px 25px',
                 }}
                 onClick={() => categoryChange(null)}
             >
@@ -37,17 +48,16 @@ export default function LeftPanel({ products, categoryChange, selectedCategory, 
                         <Box
                             key={item.id}
                             sx={{
-                                "&:hover": {
+                                '&:hover': {
                                     background: primary.light,
                                 },
                             }}
-
                         >
                             <Typography
                                 variant="body1"
                                 sx={{
-                                    padding: "10px 25px",
-                                    textTransform: "capitalize",
+                                    padding: '10px 25px',
+                                    textTransform: 'capitalize',
                                     background:
                                         item.category === selectedCategory ? primary.light : 'inherit',
                                 }}
@@ -63,15 +73,3 @@ export default function LeftPanel({ products, categoryChange, selectedCategory, 
         </Box>
     );
 }
-
-
-LeftPanel.propTypes = {
-    products: PropTypes.instanceOf(Array).isRequired,
-    selectedCategory: PropTypes.string,
-    categoryChange: PropTypes.func,
-};
-
-LeftPanel.defaultProps = {
-    selectedCategory: 'All',
-    categoryChange: () => { },
-};

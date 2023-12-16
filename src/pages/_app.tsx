@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MainLayout from '@common/components/layouts/MainLayout';
-import PropTypes from 'prop-types';
 import { wrapper } from 'src/store';
 import '../styles/globals.css';
 import { ThemeProvider } from '@mui/material/styles';
@@ -10,12 +9,16 @@ import createEmotionCache from 'src/helpers/createEmotionCache';
 import setGlobalStyles from 'src/styles/setGlobalStyles';
 import Theme from 'src/styles/theme';
 import Head from 'next/head';
-import { Modal } from '@mui/material';
+
+interface MyAppProps {
+  Component: React.ElementType;
+  emotionCache?: ReturnType<typeof createEmotionCache>;
+  pageProps: any;
+}
 
 const clientSideEmotionCache = createEmotionCache();
 
-export function MyApp(props) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: MyAppProps) {
   const [theme] = useState(Theme);
 
   return (
@@ -24,7 +27,7 @@ export function MyApp(props) {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>
       <ThemeProvider theme={theme}>
-        {setGlobalStyles(theme, { overflowY: Modal.open && 'hidden' })}
+        {setGlobalStyles(theme)}
         <CssBaseline />
         <MainLayout>
           <Component {...pageProps} />
@@ -33,11 +36,5 @@ export function MyApp(props) {
     </CacheProvider>
   );
 }
-
-MyApp.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  emotionCache: PropTypes.instanceOf(Object),
-  pageProps: PropTypes.instanceOf(Object).isRequired,
-};
 
 export default wrapper.withRedux(MyApp);

@@ -1,4 +1,14 @@
-export const items = [
+
+interface Item {
+    id: string;
+    productName: string;
+    description: string;
+    unitPrice: number;
+    imageUrl: string;
+    category: string;
+}
+
+export const items: Item[] = [
     {
         "id": "c34d2273-6ec4-59ee-b3ef-3663b1c66a06",
         "productName": "Elecap buwzabih pil onebi.",

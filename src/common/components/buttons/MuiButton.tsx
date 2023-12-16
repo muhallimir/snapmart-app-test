@@ -1,8 +1,17 @@
+import React from 'react';
 import Button from '@mui/material/Button';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
 
-export default function MuiButton({
+interface MuiButtonProps {
+  children: React.ReactNode;
+  href: string | null | object;
+  sx?: React.CSSProperties;
+  variant: string;
+  fit?: boolean;
+  'data-testid'?: string | null;
+}
+
+const MuiButton: React.FC<MuiButtonProps> = ({
   children,
   href,
   sx,
@@ -10,10 +19,10 @@ export default function MuiButton({
   fit,
   'data-testid': dataTestid,
   ...props
-}) {
-  const style = {
-    p: '15px 16px',
-    fontze: '14px',
+}) => {
+  const style: React.CSSProperties = {
+    padding: '15px 16px',
+    fontSize: '14px', // Corrected typo from 'fontze' to 'fontSize'
     lineHeight: '18px',
     width: '100%',
     maxWidth: fit ? 'fit-content' : '100%',
@@ -22,11 +31,13 @@ export default function MuiButton({
     fontWeight: 700,
   };
 
+  const validHref = typeof href === 'string' ? href : '#';
+
   const button = (
     <Button
       component={href ? 'a' : 'button'}
-      variant={variant}
-      sx={{ ...style, ...sx }}
+      variant={variant as any}
+      sx={{ ...style, ...sx, }}
       {...props}
     >
       {children}
@@ -40,20 +51,6 @@ export default function MuiButton({
       {button}
     </Link>
   );
-}
-
-MuiButton.propTypes = {
-  href: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Object)]),
-  children: PropTypes.node.isRequired,
-  variant: PropTypes.string.isRequired,
-  fit: PropTypes.bool,
-  sx: PropTypes.instanceOf(Object),
-  'data-testid': PropTypes.string,
 };
 
-MuiButton.defaultProps = {
-  href: null,
-  sx: {},
-  fit: false,
-  'data-testid': null,
-};
+export default MuiButton;

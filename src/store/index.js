@@ -2,7 +2,7 @@ import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import productSlice from './product.slice';
 import cartSlice from './cart.slice';
-import { persistReducer, persistStore } from 'redux-persist';
+import { PERSIST, REGISTER, REHYDRATE, persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
@@ -32,12 +32,20 @@ export const makeStore = ({ isServer }) => {
     if (isServer) {
         return configureStore({
             reducer: persistedReducer,
-            middleware: [...getDefaultMiddleware()],
+            middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+                serializableCheck: {
+                    ignoredActions: [REHYDRATE, , REGISTER],
+                },
+            }),
         });
     } else {
         const store = configureStore({
             reducer: persistedReducer,
-            middleware: [...getDefaultMiddleware()],
+            middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+                serializableCheck: {
+                    ignoredActions: [REHYDRATE, PERSIST, REGISTER],
+                },
+            }),
         });
         store.__persistor = persistStore(store);
         return store;
